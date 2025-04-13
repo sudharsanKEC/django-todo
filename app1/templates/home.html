@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <title>Home page</title>
+    </head>
+    <body>
+        <form method="POST" action="{% url 'login_redirect' %}">
+            {% csrf_token %}
+            <button type="submit" name="role" value="CTO">Chief Technology Officer</button>
+            <button type="submit" name="role" value="SPM">Senior Product Manager</button>
+            <button type="submit" name="role" value="PM">Product Manager</button>
+            <button type="submit" name="role" value="SD">Senior Developer</button>
+            <button type="submit" name="role" value="Intern">Intern</button>
+            <button type="submit" name="role" value="uiux">UI/UX designer</button>
+            <button type="submit" name="role" value="devops">DevOPS Engineer</button>
+            <button type="submit" name="role" value="network">Networking Engineer</button>
+        </form>
+    </body>
+<html>

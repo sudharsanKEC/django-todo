@@ -3,6 +3,30 @@ from django.http import HttpResponse
 from django.contrib import messages
 from .models import CTO
 # Create your views here.
+
+def home(request):
+    return render(request,"home.html")
+def login_redirect(request):
+    if request.method=="POST":
+        role=request.POST.get('role')
+
+        if role=="CTO":
+            return redirect("ctoAuthLogin")
+        if role=="SPM":
+            return redirect("spmAuthLogin")
+        if role=="PM":
+            return redirect("pmAuthLogin")
+        if role=="SD":
+            return redirect("seniordevAuthLogin")
+        if role=="Intern":
+            return redirect("internAuthLogin")
+        if role=="uiux":
+            return redirect("uiuxAuthLogin")
+        if role=="devops":
+            return redirect("devopsAuthLogin")
+        if role=="network":
+            return redirect("networkAuthLogin")
+
 def ctoAuthSignup(request):
     if request.method=="POST":
         name=request.POST['name']
@@ -10,10 +34,10 @@ def ctoAuthSignup(request):
         password1=request.POST['password1']
         password2=request.POST['password2']
         if password1!=password2:
-            return render(request,'cto_signup.html',{"error":"The password entered should match each other"})
+            return render(request,'cto/cto_signup.html',{"error":"The password entered should match each other"})
 
         if CTO.objects.filter(name=name,company_name=company).exists():
-            return render(request,'cto_signup.html',{"error":"CTO already exists"})
+            return render(request,'cto/cto_signup.html',{"error":"CTO already exists"})
         else:
             cto = CTO.objects.create(name=name,company_name=company,password=password1)
             return redirect("ctoAuthLogin")
@@ -35,11 +59,32 @@ def ctoAuthLogin(request):
         else:
             messages.error(request,"Invalid credentials! Please verify your inputs")
             return redirect("ctoAuthLogin")
-    return render(request,"cto_login.html")
+    return render(request,"cto/cto_login.html")
 
 def ctopage(request):
     cto_id=request.session.get("cto_id",0)
     if not cto_id:
         return redirect('ctoauthlogin')
     cto=CTO.objects.get(cto_id=cto_id)
-    return render(request,"cto_dashboard.html",{"cto":cto})
+    return render(request,"cto/cto_dashboard.html",{"cto":cto})
+
+def spmAuthLogin(request):
+    return HttpResponse("<h1>Senior product Manager login page</h1>")
+
+def pmAuthLogin(request):
+    return HttpResponse("<h1>Product Manager login page</h1>")
+
+def internAuthLogin(request):
+    return HttpResponse("<h1>Intern Login page</h1>")
+
+def uiuxAuthLogin(request):
+    return HttpResponse("<h1>UIUX login page</h1>")
+
+def devopsAuthLogin(request):
+    return HttpResponse("<h1>Devops Login page</h1>")
+
+def networkAuthLogin(request):
+    return HttpResponse("<h1>Network login page</h1>")
+
+def seniordevAuthLogin(request):
+    return HttpResponse("<h1>Senior developer login page</h1>")
