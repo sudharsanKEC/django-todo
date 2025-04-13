@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from django.contrib import messages
-from .models import CTO
+from .models import *
 # Create your views here.
 
 def home(request):
@@ -65,8 +65,28 @@ def ctopage(request):
     cto_id=request.session.get("cto_id",0)
     if not cto_id:
         return redirect('ctoauthlogin')
+    
     cto=CTO.objects.get(cto_id=cto_id)
-    return render(request,"cto/cto_dashboard.html",{"cto":cto})
+
+    if request.method=="POST":
+        name=request.POST["name"]
+        password1=request.POST["password1"]
+        password2=request.POST["password2"]
+        if password1==password2:
+            SPM.objects.create(name=name,password=password1,cto=cto)
+            messages.success(request,f"Senior product manager {name} created successfully")
+            return redirect('ctopage')
+        else:
+            messages.error(request,"Enter the inputs properly!")
+    
+    spms = SPM.objects.filter(cto=cto)
+
+    return render(request,"cto/cto_dashboard.html",
+                    {
+                        "cto":cto,
+                        "spms":spms,
+                    }
+                )
 
 def spmAuthLogin(request):
     return HttpResponse("<h1>Senior product Manager login page</h1>")

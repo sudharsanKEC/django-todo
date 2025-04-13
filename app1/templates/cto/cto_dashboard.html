@@ -4,8 +4,57 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width,initial-scale=1.0">
         <title>CTO dashboard page</title>
+        <style>
+            .alert {
+                padding: 10px;
+                margin-bottom: 15px;
+                border-radius: 5px;
+            }
+            .alert-success {
+                background-color: #d4edda;
+                color: #155724;
+            }
+            .alert-error {
+                background-color: #f8d7da;
+                color: #721c24;
+            }
+        </style>
+        
     </head>
     <body>
-        <h2>Hello CTO {{ cto.name }} of {{ cto.company_name }}</h2>
+        <h2>Welcome , {{ cto.name }}</h2>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    <p>{{ message }}</p>
+                </div>
+            {% endfor %}
+        {% endif %}
+        <form method="POST" action="{% url 'ctopage'%}" >
+            {% csrf_token %}
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name">
+            <label for="password1">Password:</label>
+            <input type="password" id="password1" name="password1">
+            <label for="password2">Confirm Password:</label>
+            <input type="password" id="password2" name="password2">
+            <button type="submit">Create SPM</button>
+        </form>
+        <h2>Created Senior project managers</h2>
+        <table border="1">
+            <tr>
+                <th>SPM id</th>
+                <th>SPM name</th>
+            </tr>
+            {% for spm in spms%}
+            <tr>
+                <td>{{ spm.spm_id }}</td>
+                <td>{{ spm.name }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="2">No SPMs created yet</td></tr>
+            {% endfor %}
+        </table>
+        
     </body>
 </html>
