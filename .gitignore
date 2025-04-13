@@ -1,0 +1,5 @@
+# ignoring the db.sqlite3 file
+db.sqlite3
+# ignoring pycache files
+app1/__pycache__
+project1/__pycache__
