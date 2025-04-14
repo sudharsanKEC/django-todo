@@ -45,11 +45,13 @@
             <tr>
                 <th>SPM id</th>
                 <th>SPM name</th>
+                <th>SPM page</th>
             </tr>
             {% for spm in spms%}
             <tr>
                 <td>{{ spm.spm_id }}</td>
                 <td>{{ spm.name }}</td>
+                <td><a href="{% url 'cto_spm' spm.id%}">Assign Task</a></td>
             </tr>
             {% empty %}
             <tr><td colspan="2">No SPMs created yet</td></tr>

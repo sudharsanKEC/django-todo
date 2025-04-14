@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.http import HttpResponse
 from django.contrib import messages
 from .models import *
@@ -87,6 +87,33 @@ def ctopage(request):
                         "spms":spms,
                     }
                 )
+
+
+
+
+
+
+def cto_spm(request,spm_id):
+    spm=get_object_or_404(SPM,spm_id=spm_id)
+    if request.method=="POST":
+        title=request.POST["title"]
+        description=request.POST["description"]
+        cto=CTO.objects.get(cto_id=request.session["cto_id"])
+
+        SPM_TASK.objects.create(
+            title=title,
+            description=description,
+            assigned_to=spm,
+            created_by=cto
+        )
+        messages.success(request,"Task Assigned successfully")
+    tasks=SPM_TASK.objects.filter(assigned_to=spm)
+    return render(request,"cto_assign_task.html",{"spm":spm,"tasks":tasks})
+
+
+
+
+
 
 def spmAuthLogin(request):
     return HttpResponse("<h1>Senior product Manager login page</h1>")

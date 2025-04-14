@@ -9,6 +9,7 @@ urlpatterns=[
     path("ctoauthsignup",views.ctoAuthSignup,name="ctoAuthSignup"),
     path("ctoauthlogin",views.ctoAuthLogin,name="ctoAuthLogin"),
     path("ctopage",views.ctopage,name="ctopage"),
+    path("ctospm",views.cto_spm,name="cto_spm"),
     path("spm_auth_login",views.spmAuthLogin,name="spmAuthLogin"),
     path("pm_auth_login",views.pmAuthLogin,name="pmAuthLogin"),
     path("intern_auth_login",views.internAuthLogin,name="internAuthLogin"),
