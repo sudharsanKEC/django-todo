@@ -131,27 +131,34 @@ def spmAuthLogin(request):
 
         print("Entered details: ",name,password,company)
 
-        spm = SPM.objects.filter(name=name).first()
-        if not spm:
-            messages.error(request,"SPM not exists")
+        cto = CTO.objects.filter(company_name=company).first()
+
+        if not cto:
+            messages.error(request,f"No company exists with this {company} name")
             return redirect('spmAuthLogin')
-        cto = spm.cto
-
-        print("spm details:",spm.name,spm.password,spm.cto.company_name)
-
-        if company==cto.company_name:
-            if spm.password==password:
-                return redirect('spm_dashboard',name=spm.name)
-            else:
-                messages.error(request,"Invalid credentails!")
-                return redirect('spmAuthLogin')
+        spm = SPM.objects.filter(name=name,password=password,cto_id=cto.cto_id).first()        
+        if spm:
+           return redirect('spm_dashboard',name=spm.name,id=spm.spm_id)
         else:
-                messages.error(request,"Invalid credentails!")
-                return redirect('spmAuthLogin')
+            messages.error(request,"Invalid credentials!")
+            return redirect('spmAuthLogin')
+        
     return render(request,"SPM/login.html")
 
-def spm_dashboard(request,name):
-    return HttpResponse(f"<h1>Welcome to the dashboard, {name}</h1>")
+def spm_dashboard(request,name,id):
+    spm=SPM.objects.filter(spm_id=id).first()
+    tasks=SPM_TASK.objects.filter(assigned_to=spm.spm_id)
+    return render(request,'SPM/dashboard.html',{"spm":spm,"tasks":tasks})
+
+def toggle_spm_task_checkbox(request,task_id):
+    if request.method=="POST":
+        task=get_object_or_404(SPM_TASK,id=task_id)
+        if request.POST.get("task_status")=="on":
+            task.status="Completed"
+        else:
+            task.status="Pending"
+        task.save()
+        return redirect("spm_dashboard",name=task.assigned_to.name,id=task.assigned_to.spm_id)
 
 def pmAuthLogin(request):
     return HttpResponse("<h1>Product Manager login page</h1>")

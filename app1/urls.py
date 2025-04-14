@@ -17,7 +17,8 @@ urlpatterns=[
     path("ctospm/<int:spm_id>/",views.cto_spm,name="cto_spm"),
     path("delete_task/<int:t_id>",views.delete_task,name="delete_task"),
     path("spm_auth_login",views.spmAuthLogin,name="spmAuthLogin"),
-    path("spm_dashboard/<str:name>",views.spm_dashboard,name="spm_dashboard"),
+    path("spm_dashboard/<str:name>/<int:id>",views.spm_dashboard,name="spm_dashboard"),
+    path("spm_task_toggle/<int:task_id>",views.toggle_spm_task_checkbox,name="toggle_spm_task_checkbox"),
 
     # pm related pages
     path("pm_auth_login",views.pmAuthLogin,name="pmAuthLogin"),

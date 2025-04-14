@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lange="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <title>SPM dashboard page</title>
+    </head>
+    <body>
+        <h1>Welcome SPM {{ spm.name }}</h1>
+        <table border="1">
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Assigned at</th>
+                <th>Assigned by</th>
+                <th>Status</th>
+                <th>Mark as complete</th>
+            </tr>
+        {% for task in tasks%}
+            <tr>
+                <td>{{task.title}}</td>
+                <td>{{task.description}}</td>
+                <td>{{task.created_at}}</td>
+                <td>{{task.created_by.name}}</td>
+                <td>{{task.status}}</td>
+                <td>
+                    <form method="POST" action="{% url 'toggle_spm_task_checkbox' task.id %}">
+                    {% csrf_token %}
+                        <input type="checkbox" name="task_status" onchange="this.form.submit()" {% if task.status == "Completed" %}checked{% endif %}>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr colspan="5">
+                <td>No tasks assigned to you</td>
+            </tr>
+        
+        {%endfor%}
+    </table>
+    </body>
+</html>
