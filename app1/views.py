@@ -160,8 +160,6 @@ def toggle_spm_task_checkbox(request,task_id):
         task.save()
         return redirect("spm_dashboard",name=task.assigned_to.name,id=task.assigned_to.spm_id)
 
-def pmAuthLogin(request):
-    return HttpResponse("<h1>Product Manager login page</h1>")
 
 def internAuthLogin(request):
     return HttpResponse("<h1>Intern Login page</h1>")

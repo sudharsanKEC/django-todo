@@ -20,10 +20,6 @@ urlpatterns=[
     path("spm_dashboard/<str:name>/<int:id>",views.spm_dashboard,name="spm_dashboard"),
     path("spm_task_toggle/<int:task_id>",views.toggle_spm_task_checkbox,name="toggle_spm_task_checkbox"),
 
-    # pm related pages
-    path("pm_auth_login",views.pmAuthLogin,name="pmAuthLogin"),
-
-
     path("intern_auth_login",views.internAuthLogin,name="internAuthLogin"),
     path("uiux_auth_login",views.uiuxAuthLogin,name="uiuxAuthLogin"),
     path("devops_auth_login",views.devopsAuthLogin,name="devopsAuthLogin"),
