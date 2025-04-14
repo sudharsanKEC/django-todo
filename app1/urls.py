@@ -4,15 +4,25 @@ from . import views
 
 urlpatterns=[
 
+    # common pages
     path("",views.home,name="home"),
     path("login_redirect",views.login_redirect,name="login_redirect"),
+
+    # cto related pages
     path("ctoauthsignup",views.ctoAuthSignup,name="ctoAuthSignup"),
     path("ctoauthlogin",views.ctoAuthLogin,name="ctoAuthLogin"),
     path("ctopage",views.ctopage,name="ctopage"),
+
+    # spm related pages
     path("ctospm/<int:spm_id>/",views.cto_spm,name="cto_spm"),
     path("delete_task/<int:t_id>",views.delete_task,name="delete_task"),
     path("spm_auth_login",views.spmAuthLogin,name="spmAuthLogin"),
+    path("spm_dashboard/<str:name>",views.spm_dashboard,name="spm_dashboard"),
+
+    # pm related pages
     path("pm_auth_login",views.pmAuthLogin,name="pmAuthLogin"),
+
+
     path("intern_auth_login",views.internAuthLogin,name="internAuthLogin"),
     path("uiux_auth_login",views.uiuxAuthLogin,name="uiuxAuthLogin"),
     path("devops_auth_login",views.devopsAuthLogin,name="devopsAuthLogin"),

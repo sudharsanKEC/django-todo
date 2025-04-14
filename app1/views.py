@@ -123,7 +123,35 @@ def delete_task(request,t_id):
 
 
 def spmAuthLogin(request):
-    return HttpResponse("<h1>Senior product Manager login page</h1>")
+
+    if request.method=="POST":
+        name=request.POST.get("name")
+        password=request.POST.get("password")
+        company=request.POST.get("company")
+
+        print("Entered details: ",name,password,company)
+
+        spm = SPM.objects.filter(name=name).first()
+        if not spm:
+            messages.error(request,"SPM not exists")
+            return redirect('spmAuthLogin')
+        cto = spm.cto
+
+        print("spm details:",spm.name,spm.password,spm.cto.company_name)
+
+        if company==cto.company_name:
+            if spm.password==password:
+                return redirect('spm_dashboard',name=spm.name)
+            else:
+                messages.error(request,"Invalid credentails!")
+                return redirect('spmAuthLogin')
+        else:
+                messages.error(request,"Invalid credentails!")
+                return redirect('spmAuthLogin')
+    return render(request,"SPM/login.html")
+
+def spm_dashboard(request,name):
+    return HttpResponse(f"<h1>Welcome to the dashboard, {name}</h1>")
 
 def pmAuthLogin(request):
     return HttpResponse("<h1>Product Manager login page</h1>")
