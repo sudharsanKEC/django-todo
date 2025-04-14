@@ -107,11 +107,18 @@ def cto_spm(request,spm_id):
             created_by=cto
         )
         messages.success(request,"Task Assigned successfully")
+        return redirect("cto_spm",spm_id=spm.spm_id)
     tasks=SPM_TASK.objects.filter(assigned_to=spm)
-    return render(request,"cto_assign_task.html",{"spm":spm,"tasks":tasks})
+    return render(request,"cto/cto_assign_task.html",{"spm":spm,"tasks":tasks})
 
+def delete_task(request,t_id):
+    task=get_object_or_404(SPM_TASK,id=t_id)
+    spm_id=task.assigned_to.spm_id
 
-
+    if request.method=="POST":
+        task.delete()
+        messages.success(request,"Task deleted successfully")
+    return redirect("cto_spm",spm_id=spm_id)
 
 
 
