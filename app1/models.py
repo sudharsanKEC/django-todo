@@ -6,6 +6,9 @@ class CTO(models.Model):
     name=models.CharField(max_length=100,null=False,blank=False)
     company_name=models.CharField(max_length=100,null=False,blank=False)
     password=models.CharField(max_length=100,null=False,blank=True)
+    
+    def __str__(self):
+        return self.name
 
 class SPM(models.Model):
     spm_id=models.AutoField(primary_key=True)
@@ -25,6 +28,7 @@ class Senior_dev(models.Model):
     sde_id=models.AutoField(primary_key=True)
     sde_spm=models.ForeignKey(SPM,on_delete=models.CASCADE,related_name="sde_spm")
     sde_cto=models.ForeignKey(CTO,on_delete=models.CASCADE,related_name="sde_cto")
+    role=models.CharField(max_length=20,blank=False,null=True)
     name=models.CharField(max_length=100,blank=False,null=False)
     password=models.CharField(max_length=100,blank=False,null=False)
 
