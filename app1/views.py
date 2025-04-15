@@ -41,7 +41,7 @@ def ctoAuthSignup(request):
         else:
             cto = CTO.objects.create(name=name,company_name=company,password=password1)
             return redirect("ctoAuthLogin")
-    return render(request,"cto_signup.html")
+    return render(request,"cto/cto_signup.html")
 def ctoAuthLogin(request):
     if request.method=="POST":
         name=request.POST["name"]
