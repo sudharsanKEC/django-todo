@@ -28,7 +28,6 @@ class Senior_dev(models.Model):
     sde_id=models.AutoField(primary_key=True)
     sde_spm=models.ForeignKey(SPM,on_delete=models.CASCADE,related_name="sde_spm")
     sde_cto=models.ForeignKey(CTO,on_delete=models.CASCADE,related_name="sde_cto")
-    role=models.CharField(max_length=20,blank=False,null=True)
     name=models.CharField(max_length=100,blank=False,null=False)
     password=models.CharField(max_length=100,blank=False,null=False)
 

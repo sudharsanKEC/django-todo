@@ -7,7 +7,7 @@ class CTOAdmin(admin.ModelAdmin):
 admin.site.register(CTO,CTOAdmin)
 
 class SPMAdmin(admin.ModelAdmin):
-    readonly_fields=['cto',]
+    # readonly_fields=['cto',]
     list_display=['spm_id','name','password','get_cto_name','get_cto_id']
     ordering=['spm_id']
     @admin.display(description='CTO Name') # how its correctly displaying the name in admin panel?

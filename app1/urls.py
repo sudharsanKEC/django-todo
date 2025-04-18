@@ -20,6 +20,8 @@ urlpatterns=[
     path("spm_dashboard/<str:name>/<int:id>",views.spm_dashboard,name="spm_dashboard"),
     path("spm_task_toggle/<int:task_id>",views.toggle_spm_task_checkbox,name="toggle_spm_task_checkbox"),
 
+    path("spm_role_creation/<int:spm_id>",views.spm_role_creation,name="spm_role_creation"),
+
     path("intern_auth_login",views.internAuthLogin,name="internAuthLogin"),
     path("uiux_auth_login",views.uiuxAuthLogin,name="uiuxAuthLogin"),
     path("devops_auth_login",views.devopsAuthLogin,name="devopsAuthLogin"),
