@@ -24,3 +24,11 @@ class SPM_TASK(models.Model):
     status=models.CharField(max_length=20,choices=[("Pending","Pending"),("Completed","Completed")],default="Pending")
     created_at=models.DateTimeField(auto_now_add=True)
     
+class EMP_Role(models.Model):
+    emp_id=models.AutoField(primary_key=True)
+    role=models.CharField(max_length=25,blank=False,null=False)
+    emp_spm=models.ForeignKey(SPM,on_delete=models.CASCADE,related_name="emp_spm")
+    emp_cto=models.ForeignKey(CTO,on_delete=models.CASCADE,related_name="emp_cto")
+    name=models.CharField(max_length=100,blank=False,null=False)
+    password=models.CharField(max_length=100,blank=False,null=False)
+    company=models.CharField(max_length=25,blank=False,null=False)

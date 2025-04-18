@@ -18,7 +18,7 @@
                 <th>Mark as complete</th>
             </tr>
         {% for task in tasks%}
-            <tr>
+            <tr> 
                 <td>{{task.title}}</td>
                 <td>{{task.description}}</td>
                 <td>{{task.created_at}}</td>
@@ -32,8 +32,8 @@
                 </td>
             </tr>
             {% empty %}
-            <tr colspan="5">
-                <td>No tasks assigned to you</td>
+            <tr >
+                <td colspan="6">No tasks assigned to you</td>
             </tr>
         
         {%endfor%}
@@ -56,15 +56,33 @@
             <option value="dev_ops">DevOps Engineer</option>
             <option value="network">Network Engineer</option>
         </select><br>
-        <label for="password">Enter password:</label>
-        <input type="password" id="password" name="password"><br>
-        <label for="confirm-password">Confirm-password:</label>
-        <input type="password" id="confirm-password" name="confirm-password"><br>
+        <label for="password1">Enter password:</label>
+        <input type="password" id="password1" name="password1"><br>
+        <label for="password2">Confirm-password:</label>
+        <input type="password" id="password2" name="password2"><br>
         <button type="submit">Create Role</button>
     </form>
     <div>
-        {% for %}
-        {%endfor%}
+        <table border="1">
+            <tr>
+                <th>Emp Id</th>
+                <th>Emp Name</th>
+                <th>Emp Role</th>
+                <th>Profile</th>
+            </tr>
+            {% for emp in emps %}
+            <tr>
+                <td>{{ emp.emp_id }}</td>
+                <td>{{ emp.name }}</td>
+                <td>{{ emp.role }}</td>
+                <td>Assign Task</td>
+            </tr>
+            {% empty %}
+            <tr >
+                <td colspan="5">No employees created yet</td>
+            </tr>
+            {% endfor %}
+        </table>
     </div>
     </body>
 </html>

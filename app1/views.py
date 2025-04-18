@@ -149,24 +149,22 @@ def spm_dashboard(request,name,id):
     return render(request,'SPM/dashboard.html',{"spm":spm,"tasks":tasks})
 
 
-def spm_role_creation(request,spm_id):
-    spm=SPM.objects.filter(spm_id=spm_id).first()
-    tasks=SPM_TASK.objects.filter(assigned_to=spm_id).first()
-    if request.method=="POST":
-        name=request.POST.get('name')
-        role=request.POST.get('role')
-        password1=request.POST.get('password')
-        password2=request.POST.get('confirm-password')
-        if password1!=password2:
-            messages.error(request,"Passworda does not matches correctly for the previous role creation!")
-            return redirect('spm_dashboard',name=spm.name,id=spm.spm_id) # the names(name,id) given here should have the same name in the url also, i mean the names here and there should be similar if not then it will cause error
-        if role=="senior-dev":
-            Senior_dev.objects.create(sde_spm=spm,sde_cto=spm.cto,name=name,password=password1) # here we should not give like this Senior_dev.objects.create(sde_spm=spm.spm_id,sde_cto=spm.cto.cto_id,name=name,password=password1) because when we try to assign the value for a foreign key field in a model, we should not want to give like sde_spm=spm.spm_id and sde_cto=spm.cto.cto_id because django automatically takes the primary key from the model when we give like sde_spm=spm so we dont want to assign like sed_spm=spm.spm_id if we do so then it might leads to some unexpected behavior
-            messages.success(request,f"User {name} with {role} role created successfully")
-            return redirect('spm_dashboard',name=spm.name,id=spm.spm_id)
-    return render(request,"SPM/dashboard.html",{"spm":spm,"tasks":tasks})
-
-
+# def spm_role_creation(request,spm_id):
+#     spm=SPM.objects.filter(spm_id=spm_id).first()
+#     tasks=SPM_TASK.objects.filter(assigned_to=spm_id).first()
+#     if request.method=="POST":
+#         name=request.POST.get('name')
+#         role=request.POST.get('role')
+#         password1=request.POST.get('password')
+#         password2=request.POST.get('confirm-password')
+#         if password1!=password2:
+#             messages.error(request,"Passworda does not matches correctly for the previous role creation!")
+#             return redirect('spm_dashboard',name=spm.name,id=spm.spm_id) # the names(name,id) given here should have the same name in the url also, i mean the names here and there should be similar if not then it will cause error
+#         if role=="senior-dev":
+#             Senior_dev.objects.create(sde_spm=spm,sde_cto=spm.cto,name=name,password=password1) # here we should not give like this Senior_dev.objects.create(sde_spm=spm.spm_id,sde_cto=spm.cto.cto_id,name=name,password=password1) because when we try to assign the value for a foreign key field in a model, we should not want to give like sde_spm=spm.spm_id and sde_cto=spm.cto.cto_id because django automatically takes the primary key from the model when we give like sde_spm=spm so we dont want to assign like sed_spm=spm.spm_id if we do so then it might leads to some unexpected behavior
+#             messages.success(request,f"User {name} with {role} role created successfully")
+#             return redirect('spm_dashboard',name=spm.name,id=spm.spm_id)
+#     return render(request,"SPM/dashboard.html",{"spm":spm,"tasks":tasks})
 
 
 def toggle_spm_task_checkbox(request,task_id):
@@ -179,6 +177,25 @@ def toggle_spm_task_checkbox(request,task_id):
         task.save()
         return redirect("spm_dashboard",name=task.assigned_to.name,id=task.assigned_to.spm_id)
 
+def spm_role_creation(request,spm_id):
+    spm_obj=SPM.objects.filter(spm_id=spm_id).first()
+    
+    cto_obj=spm_obj.cto
+    if request.method=="POST":
+        name=request.POST.get('name')
+        role=request.POST.get('role')
+        password1=request.POST.get('password1')
+        password2=request.POST.get('password2')
+        if password1!=password2:
+            messages.error(request,"Both the entered password should match")
+            return redirect("spm_dashboard",name=spm_obj.name,id=spm_obj.spm_id)
+        EMP_Role.objects.create(role=role,name=name,password=password1,emp_cto=cto_obj,emp_spm=spm_obj)
+        messages.success(request,f"employee {name} created with the role {role} successfully")
+        return redirect("spm_dashboard",name=spm_obj.name,id=spm_obj.spm_id)
+    emps=EMP_Role.objects.filter(emp_spm=spm_obj)
+    tasks=SPM_TASK.objects.filter(assigned_to=spm_obj)
+    return render(request,"SPM/dashboard.html",{"emps":emps,"spm":spm_obj})
+    
 
 def internAuthLogin(request):
     return HttpResponse("<h1>Intern Login page</h1>")
