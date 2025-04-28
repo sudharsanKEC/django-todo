@@ -37,7 +37,7 @@ class UIUX(models.Model):
     uiux_cto=models.ForeignKey(CTO,on_delete=models.CASCADE,related_name="uiux_cto")
     name=models.CharField(max_length=100,blank=False,null=False)
     password=models.CharField(max_length=100,blank=False,null=True)
-
+ 
 class DEVOPS(models.Model):
     dops_id=models.AutoField(primary_key=True)
     dops_spm=models.ForeignKey(SPM,on_delete=models.CASCADE,related_name="dops_spm")
