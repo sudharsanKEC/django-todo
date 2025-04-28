@@ -178,23 +178,29 @@ def toggle_spm_task_checkbox(request,task_id):
         return redirect("spm_dashboard",name=task.assigned_to.name,id=task.assigned_to.spm_id)
 
 def spm_role_creation(request,spm_id):
-    spm_obj=SPM.objects.filter(spm_id=spm_id).first()
+    spm_obj=request.session.get("spm_id",0)
     
+    if not spm_obj:
+        return redirect('spmAuthLogin')
     cto_obj=spm_obj.cto
     if request.method=="POST":
         name=request.POST.get('name')
         role=request.POST.get('role')
         password1=request.POST.get('password1')
         password2=request.POST.get('password2')
-        if password1!=password2:
-            messages.error(request,"Both the entered password should match")
+        if password1==password2:
+            EMP_Role.objects.create(role=role,name=name,password=password1,emp_cto=cto_obj,emp_spm=spm_obj)
+            messages.success(request,f"employee {name} created with the role {role} successfully")
             return redirect("spm_dashboard",name=spm_obj.name,id=spm_obj.spm_id)
-        EMP_Role.objects.create(role=role,name=name,password=password1,emp_cto=cto_obj,emp_spm=spm_obj)
-        messages.success(request,f"employee {name} created with the role {role} successfully")
-        return redirect("spm_dashboard",name=spm_obj.name,id=spm_obj.spm_id)
+        else:
+            messages.error(request,"Both the entered password should match")
     emps=EMP_Role.objects.filter(emp_spm=spm_obj)
-    tasks=SPM_TASK.objects.filter(assigned_to=spm_obj)
-    return render(request,"SPM/dashboard.html",{"emps":emps,"spm":spm_obj})
+    return render(request,"SPM/dashboard.html",
+                  {
+                      "emps":emps,
+                      "spm":spm_obj,
+                  }
+                )
     
 
 def internAuthLogin(request):

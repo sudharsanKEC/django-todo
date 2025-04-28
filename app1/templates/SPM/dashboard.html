@@ -4,6 +4,21 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width,initial-scale=1.0">
         <title>SPM dashboard page</title>
+        <style>
+            .alert {
+                padding: 10px;
+                margin-bottom: 15px;
+                border-radius: 5px;
+            }
+            .alert-success {
+                background-color: #d4edda;
+                color: #155724;
+            }
+            .alert-error {
+                background-color: #f8d7da;
+                color: #721c24;
+            }
+        </style>
     </head>
     <body>
         <h1>Welcome SPM {{ spm.name }}</h1>
@@ -38,11 +53,15 @@
         
         {%endfor%}
     </table>
-    <div class="error-message">
+
+    {% if messages %}
         {% for message in messages%}
-        <p style="color:red">{{ message }}</p>
+            <div class="alert alert-{{ message.tags }}">
+                <p>{{ message }}</p>
+            </div>
         {%endfor%}
-    </div>
+    {% endif %}
+    
     <h2>Create a new role?</h2>
     <form method="POST" action="{% url 'spm_role_creation' spm.spm_id %}">
         {% csrf_token %}
@@ -62,7 +81,6 @@
         <input type="password" id="password2" name="password2"><br>
         <button type="submit">Create Role</button>
     </form>
-    <div>
         <table border="1">
             <tr>
                 <th>Emp Id</th>
@@ -70,7 +88,7 @@
                 <th>Emp Role</th>
                 <th>Profile</th>
             </tr>
-            {% for emp in emps %}
+            {% for emp in emps%}
             <tr>
                 <td>{{ emp.emp_id }}</td>
                 <td>{{ emp.name }}</td>
@@ -79,10 +97,9 @@
             </tr>
             {% empty %}
             <tr >
-                <td colspan="5">No employees created yet</td>
+                <td colspan="4">No employees created yet</td>
             </tr>
             {% endfor %}
         </table>
-    </div>
     </body>
 </html>
