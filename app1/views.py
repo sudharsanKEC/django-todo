@@ -146,7 +146,14 @@ def spmAuthLogin(request):
 def spm_dashboard(request,name,id):
     spm=SPM.objects.filter(spm_id=id).first()
     tasks=SPM_TASK.objects.filter(assigned_to=spm.spm_id)
-    return render(request,'SPM/dashboard.html',{"spm":spm,"tasks":tasks})
+    emps=EMP_Role.objects.filter(emp_spm=id)
+    return render(request,'SPM/dashboard.html',
+                    {
+                      "spm":spm,
+                      "tasks":tasks,
+                      "emps":emps,
+                    }
+                  )
 
 
 # def spm_role_creation(request,spm_id):
@@ -178,7 +185,7 @@ def toggle_spm_task_checkbox(request,task_id):
         return redirect("spm_dashboard",name=task.assigned_to.name,id=task.assigned_to.spm_id)
 
 def spm_role_creation(request,spm_id):
-    spm_obj=request.session.get("spm_id",0)
+    spm_obj=SPM.objects.get(spm_id=spm_id)
     
     if not spm_obj:
         return redirect('spmAuthLogin')
@@ -195,6 +202,8 @@ def spm_role_creation(request,spm_id):
         else:
             messages.error(request,"Both the entered password should match")
     emps=EMP_Role.objects.filter(emp_spm=spm_obj)
+
+    
     return render(request,"SPM/dashboard.html",
                   {
                       "emps":emps,
@@ -203,17 +212,13 @@ def spm_role_creation(request,spm_id):
                 )
     
 
-def internAuthLogin(request):
-    return HttpResponse("<h1>Intern Login page</h1>")
+def spm_assign_task_emp(request,emp_id):
+    emp_obj=EMP_Role.objects.filter(emp_id=emp_id).first()
+    return render(request,"SPM/spm_assign_task_emp.html",
+                  {
+                      "emp":emp_obj,
+                  }
+                  )
 
-def uiuxAuthLogin(request):
-    return HttpResponse("<h1>UIUX login page</h1>")
-
-def devopsAuthLogin(request):
-    return HttpResponse("<h1>Devops Login page</h1>")
-
-def networkAuthLogin(request):
-    return HttpResponse("<h1>Network login page</h1>")
-
-def seniordevAuthLogin(request):
-    return render(request,"seniordev/dashboard.html")
+def emp_task_creation(request,emp_id):
+    pass

@@ -93,7 +93,7 @@
                 <td>{{ emp.emp_id }}</td>
                 <td>{{ emp.name }}</td>
                 <td>{{ emp.role }}</td>
-                <td>Assign Task</td>
+                <td><a href="{% url 'spm_assign_task_emp' emp.emp_id %}">Assign Task</a></td>
             </tr>
             {% empty %}
             <tr >

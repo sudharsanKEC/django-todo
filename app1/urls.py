@@ -21,10 +21,7 @@ urlpatterns=[
     path("spm_task_toggle/<int:task_id>",views.toggle_spm_task_checkbox,name="toggle_spm_task_checkbox"),
 
     path("spm_role_creation/<int:spm_id>",views.spm_role_creation,name="spm_role_creation"),
+    path("spm_assign_task_emp/<int:emp_id>",views.spm_assign_task_emp,name="spm_assign_task_emp"),
 
-    path("intern_auth_login",views.internAuthLogin,name="internAuthLogin"),
-    path("uiux_auth_login",views.uiuxAuthLogin,name="uiuxAuthLogin"),
-    path("devops_auth_login",views.devopsAuthLogin,name="devopsAuthLogin"),
-    path("network_auth_login",views.networkAuthLogin,name="networkAuthLogin"),
-    path("seniordev_auth_login",views.seniordevAuthLogin,name="seniordevAuthLogin")
+    path("emp_task_creation/<int:emp_id>",views.emp_task_creation,name="emp_task_creation"),
 ]

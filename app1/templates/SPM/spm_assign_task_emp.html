@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <title>Task assign to Emp</title>
+    </head>
+    <body>
+        <h1>Assign task to {{ emp.role }} {{ emp.name }}</h1>
+        <form method="POST" action="{% url 'emp_task_creation' emp.emp_id %}">
+            {% csrf_token %}
+            <label for="title">Task title</label>
+            <input type="text" id="title" name="title">
+            <br>
+            <label for="task_description">Task Description</label>
+            <textarea name="task_description"></textarea>
+            <br>
+            <button type="submit">Assign</button>
+        </form>
+    </body>
+</html>

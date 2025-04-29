@@ -32,3 +32,11 @@ class EMP_Role(models.Model):
     name=models.CharField(max_length=100,blank=False,null=False)
     password=models.CharField(max_length=100,blank=False,null=False)
     company=models.CharField(max_length=25,blank=False,null=False)
+
+class EMP_task(models.Model):
+    title=models.CharField(max_length=100,blank=False,null=False)
+    description=models.TextField()
+    assigned_to=models.ForeignKey(EMP_Role,on_delete=models.CASCADE,related_name="emp")
+    created_by=models.ForeignKey(SPM,on_delete=models.CASCADE,related_name="spm_emp")
+    status=models.CharField(max_length=20,blank=False,null=False)
+    created_at=models.DateTimeField(auto_now_add=True)
