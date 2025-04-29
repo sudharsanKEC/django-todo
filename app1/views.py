@@ -214,11 +214,37 @@ def spm_role_creation(request,spm_id):
 
 def spm_assign_task_emp(request,emp_id):
     emp_obj=EMP_Role.objects.filter(emp_id=emp_id).first()
+    tasks=EMP_task1.objects.filter(assigned_to=emp_obj)
     return render(request,"SPM/spm_assign_task_emp.html",
                   {
                       "emp":emp_obj,
+                      "tasks":tasks,
                   }
                   )
 
 def emp_task_creation(request,emp_id):
-    pass
+    emp_obj=EMP_Role.objects.filter(emp_id=emp_id).first()
+    spm_id=emp_obj.emp_spm.spm_id
+    spm_obj=SPM.objects.filter(spm_id=spm_id).first()
+    
+    if request.method=="POST":
+        title=request.POST.get('title')
+        description=request.POST.get('task_description')
+        
+        EMP_task1.objects.create(
+            title=title,
+            description=description,
+            assigned_to=emp_obj,
+            created_by=spm_obj
+        )
+        messages.success(request,"Task assigned successfully")
+        return redirect("spm_assign_task_emp",emp_obj.emp_id)
+    tasks=EMP_task1.objects.filter(assigned_to=emp_id)
+    return render(request,"SPM/spm_assign_task_emp.html",
+                  {
+                    "tasks":tasks,    
+                  }
+                  )
+
+
+

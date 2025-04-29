@@ -17,5 +17,32 @@
             <br>
             <button type="submit">Assign</button>
         </form>
+        <h2>Assigned tasks</h2>
+        <div>
+            <table border="1">
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Assigned at</th>
+                    <th>Assigned by</th>
+                    <th>Status</th>
+                    <th>Mark as complete</th>
+                </tr>
+                {% for task in tasks %}
+                <tr>
+                    <td>{{ task.title }}</td>
+                    <td>{{ task.description }}</td>
+                    <td>{{ task.created_at }}</td>
+                    <td>{{ task.created_by }}</td>
+                    <td>{{ task.status }}</td>
+                    <td>
+                        <form method="POST" action="">
+                            <input type="checkbox">
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
     </body>
 </html>
