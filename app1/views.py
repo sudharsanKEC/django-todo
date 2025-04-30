@@ -12,18 +12,11 @@ def login_redirect(request):
 
         if role=="CTO":
             return redirect("ctoAuthLogin")
-        if role=="SPM":
+        elif role=="SPM":
             return redirect("spmAuthLogin")
-        if role=="SD":
-            return redirect("seniordevAuthLogin")
-        if role=="Intern":
-            return redirect("internAuthLogin")
-        if role=="uiux":
-            return redirect("uiuxAuthLogin")
-        if role=="devops":
-            return redirect("devopsAuthLogin")
-        if role=="network":
-            return redirect("networkAuthLogin")
+        else:
+            return redirect("emp_to_login")
+        
 
 def ctoAuthSignup(request):
     if request.method=="POST":
@@ -246,5 +239,25 @@ def emp_task_creation(request,emp_id):
                   }
                   )
 
+def emp_to_login(request):
+    if request.method=="POST":
+        emp_role=request.POST.get("role")
+        return render(request,"employee/login.html",{"emp_role":emp})
+    return render(request,"home.html")
+
+def emp_login(request,role):
+    if request.method=="POST":
+        name=request.POST.get("name")
+        password=request.POST.get("password")
+        role=request.POST.get("role")
+        emp_obj=EMP_Role.objects.filter(name=name,role=role).filter()
+        if not emp_obj:
+            messages.error(request,"No user exists with that role")
+            return redirect("emp_login")
+        if emp_obj.password==password:
+            return redirect("emp_home",name,role)
+
+def emp_home(request):
+    return render(request,"home.html")
 
 

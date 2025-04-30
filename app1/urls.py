@@ -24,4 +24,8 @@ urlpatterns=[
     path("spm_assign_task_emp/<int:emp_id>",views.spm_assign_task_emp,name="spm_assign_task_emp"),
 
     path("emp_task_creation/<int:emp_id>",views.emp_task_creation,name="emp_task_creation"),
+
+    path("emp_to_login",views.emp_to_login,name="emp_to_login"),
+    path("emp_login/<str:role>",views.emp_login,name="emp_login"),
+    path("emp_home",views.emp_home,name="emp_login")
 ]
