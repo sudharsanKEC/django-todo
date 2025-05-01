@@ -15,7 +15,7 @@ def login_redirect(request):
         elif role=="SPM":
             return redirect("spmAuthLogin")
         else:
-            return redirect("emp_to_login")
+            return redirect("emp_login",role=role)
         
 
 def ctoAuthSignup(request):
@@ -189,7 +189,7 @@ def spm_role_creation(request,spm_id):
         password1=request.POST.get('password1')
         password2=request.POST.get('password2')
         if password1==password2:
-            EMP_Role.objects.create(role=role,name=name,password=password1,emp_cto=cto_obj,emp_spm=spm_obj)
+            EMP_Role.objects.create(role=role,name=name,password=password1,emp_cto=cto_obj,emp_spm=spm_obj,company=cto_obj.company_name)
             messages.success(request,f"employee {name} created with the role {role} successfully")
             return redirect("spm_dashboard",name=spm_obj.name,id=spm_obj.spm_id)
         else:
@@ -239,25 +239,56 @@ def emp_task_creation(request,emp_id):
                   }
                   )
 
-def emp_to_login(request):
-    if request.method=="POST":
-        emp_role=request.POST.get("role")
-        return render(request,"employee/login.html",{"emp_role":emp})
-    return render(request,"home.html")
+# def emp_to_login(request):
+#     if request.method=="POST":
+#         emp_role=request.POST.get("role")
+#         return render(request,"employee/login.html",{"emp_role":emp_role})
+#     return render(request,"home.html")
 
-def emp_login(request,role):
+def emp_login(request,role): 
     if request.method=="POST":
+        company=request.POST.get("company")
         name=request.POST.get("name")
         password=request.POST.get("password")
-        role=request.POST.get("role")
-        emp_obj=EMP_Role.objects.filter(name=name,role=role).filter()
-        if not emp_obj:
-            messages.error(request,"No user exists with that role")
-            return redirect("emp_login")
-        if emp_obj.password==password:
-            return redirect("emp_home",name,role)
-
-def emp_home(request):
-    return render(request,"home.html")
 
 
+        emp_comp=CTO.objects.filter(company_name=company).first()
+        if not emp_comp:
+            messages.error(request,"No company exists with that name")
+            return redirect("emp_login",role=role)     
+
+        emp_obj=EMP_Role.objects.filter(company=company,name=name,role=role).first()
+        
+        if emp_obj:
+            if emp_obj.password==password:
+                return redirect("emp_home",name=name,role=role,company=company)
+            else:
+                messages.error(request,"Incorrect password!")
+                return redirect("emp_login",role=role)
+        messages.error(request,"No user exists with that role")
+        return redirect("emp_login",role=role)
+       
+    return render(request,"employee/login.html",{"role":role})    
+
+def emp_home(request,name,role,company):
+    emp_obj=EMP_Role.objects.filter(name=name,role=role,company=company).first()
+    emp_task_obj=EMP_task1.objects.filter(assigned_to=emp_obj)
+    return render(request,"employee/home.html",{"name":name,"role":role,"company":company,"emp_tasks":emp_task_obj}) 
+ 
+def toggle_emp_task_checkbox(request,task_id):
+    if request.method=="POST":
+        task_obj=EMP_task1.objects.filter(id=task_id).first()
+        if request.POST.get("task_status")=="on":
+            task_obj.status="Completed"
+        else:
+            task_obj.status="Pending"
+        task_obj.save()
+        return redirect("emp_home",name=task_obj.assigned_to.name,role=task_obj.assigned_to.role,company=task_obj.assigned_to.company)
+
+def emp_delete_task(request,id):
+    task_obj=EMP_task1.objects.filter(id=id).first()
+    emp_id=task_obj.assigned_to.emp_id
+    if request.method=="POST":
+        task_obj.delete()
+        messages.success(request,"Task deleted successfully")
+        return redirect("spm_assign_task_emp",emp_id=emp_id)

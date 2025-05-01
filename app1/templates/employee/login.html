@@ -6,26 +6,24 @@
         <title>Employee Login Page</title>
     </head>
     <body>
-        <h2>Login</h2>
-        <form method="POST" action="{% url 'emp_login' %}">
+        <h2>Login as a {{ role }}</h2>
+        <form method="POST" action="{% url 'emp_login' role %}">
             {% csrf_token %}
+            <label for="company">Company:</label>
+            <input type="text" id="company" name="company">
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" required>
             <label for="password">Password:</label>
             <input type="password" id="password" name="password">
-            <select name="role">
-                <option role="sd" {% if emp_role == "SD"%} selected {% endif %}>Senior Developer</option>
-                <option role="intern" {% if emp_role == "Intern"%} selected {% endif %}>Intern</option>
-                <option role="uiux" {% if emp_role == "uiux"%} selected {% endif %}>UI/UX designer</option>
-                <option role="sd" {% if emp_role == "devops"%} selected {% endif %}>DevOPS Engineer</option>
-                <option role="sd" {% if emp_role == "network"%} selected {% endif %}>Networking Engineer</option>
-            </select>
+            
             <button type="submit">Login</button>
         </form>
         <div>
-            {{ for message in messages}}
-                <p>message<p>
-            {{ endfor }}
+            {% if messages %}
+                {% for message in messages %}
+                    <p>{{ message }}<p>
+                {% endfor %}
+            {% endif %}
         </div>
     </body>
 </html>

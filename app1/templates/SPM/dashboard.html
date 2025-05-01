@@ -40,7 +40,7 @@
                 <td>{{task.created_by.name}}</td>
                 <td>{{task.status}}</td>
                 <td>
-                    <form method="POST" action="{% url 'toggle_spm_task_checkbox' task.id %}">
+                    <form action="{% url 'toggle_spm_task_checkbox' task.id %}" method="POST" >
                     {% csrf_token %}
                         <input type="checkbox" name="task_status" onchange="this.form.submit()" {% if task.status == "Completed" %}checked{% endif %}>
                     </form>
@@ -66,9 +66,9 @@
     <form method="POST" action="{% url 'spm_role_creation' spm.spm_id %}">
         {% csrf_token %}
         <label for="name">Employee Name:</label>
-        <input type="text" id="name" name="name"><br>
+        <input type="text" id="name" name="name" required><br>
         <label for="role">Select role:</label>
-        <select id="role" name="role">
+        <select id="role" name="role" required>
             <option value="senior_dev">SeniorDeveloper</option>
             <option value="intern">Intern</option>
             <option value="uiux_designer">UI/UX Designer</option>
@@ -76,9 +76,9 @@
             <option value="network">Network Engineer</option>
         </select><br>
         <label for="password1">Enter password:</label>
-        <input type="password" id="password1" name="password1"><br>
+        <input type="password" id="password1" name="password1" required><br>
         <label for="password2">Confirm-password:</label>
-        <input type="password" id="password2" name="password2"><br>
+        <input type="password" id="password2" name="password2" required><br>
         <button type="submit">Create Role</button>
     </form>
         <table border="1">

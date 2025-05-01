@@ -25,6 +25,11 @@ class SPM_TASK(models.Model):
     created_by=models.ForeignKey(CTO,on_delete=models.CASCADE,related_name="assigned_tasks")
     status=models.CharField(max_length=20,choices=[("Pending","Pending"),("Completed","Completed")],default="Pending")
     created_at=models.DateTimeField(auto_now_add=True)
+
+    class Meta:  
+        verbose_name_plural="SPM Tasks"   
+    def __str__(self):
+        return self.title
     
 class EMP_Role(models.Model):
     emp_id=models.AutoField(primary_key=True)
@@ -34,6 +39,10 @@ class EMP_Role(models.Model):
     name=models.CharField(max_length=100,blank=False,null=False)
     password=models.CharField(max_length=100,blank=False,null=False)
     company=models.CharField(max_length=25,blank=False,null=False)
+    class Meta:
+        verbose_name_plural="Employees"
+    def __str__(self):
+        return f"{self.name},{self.role},{self.company}"
 
 class EMP_task1(models.Model):
     title=models.CharField(max_length=100,blank=False,null=False)
@@ -41,4 +50,6 @@ class EMP_task1(models.Model):
     assigned_to=models.ForeignKey(EMP_Role,on_delete=models.CASCADE,related_name="emp")
     created_by=models.ForeignKey(SPM,on_delete=models.CASCADE,related_name="spm_emp")
     status=models.CharField(max_length=20,choices=[("Pending","Pending"),("Completed","Completed")],default="Pending")
-    created_at=models.DateTimeField(auto_now_add=True)
+    created_at=models.DateTimeField(auto_now_add=True)  
+    class Meta:
+        verbose_name_plural="Employee tasks"

@@ -5,7 +5,7 @@ class CTOAdmin(admin.ModelAdmin):
     list_display=['cto_id','name','company_name']
     ordering=['cto_id']
 admin.site.register(CTO,CTOAdmin)
-
+   
 class SPMAdmin(admin.ModelAdmin):
     # readonly_fields=['cto',]
     list_display=['spm_id','name','password','get_cto_name','get_cto_id']
@@ -17,3 +17,7 @@ class SPMAdmin(admin.ModelAdmin):
     def get_cto_id(self,obj):
         return obj.cto.cto_id
 admin.site.register(SPM,SPMAdmin)
+
+admin.site.register(SPM_TASK)
+admin.site.register(EMP_Role)   
+admin.site.register(EMP_task1) 
